@@ -9,13 +9,14 @@ const koa = require('koa');
 var app = new koa();
 
 app.use(logger());
+app.use(koaBody({formLimit: '5mb', textLimit: '5mb'}));
 var _ = new router();
 
 _.get('/healthz', (ctx) => {
   ctx.body = 'OK';
 });
-_.post('/uglify', koaBody(), utils.uglify);
-_.post('/browserify', koaBody(), utils.browserify);
+_.post('/uglify', utils.uglify);
+_.post('/browserify', utils.browserify);
 
 app.use(_.routes())
 app.use(compress());
